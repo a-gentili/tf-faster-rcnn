@@ -83,7 +83,7 @@ def faster_rcnn_generator(dataset, anchors, hyper_params):
         for image_data in dataset:
             img, gt_boxes, gt_labels = image_data
             bbox_deltas, bbox_labels = calculate_rpn_actual_outputs(anchors, gt_boxes, gt_labels, hyper_params)
-            yield (img, gt_boxes, gt_labels, bbox_deltas, bbox_labels), ()
+            yield (img, gt_boxes, gt_labels, bbox_deltas, bbox_labels), #()
 
 def rpn_generator(dataset, anchors, hyper_params):
     """Tensorflow data generator for fit method, yielding inputs and outputs.
@@ -215,7 +215,7 @@ def reg_loss(*args):
     #
     loss_fn = tf.losses.Huber(reduction=tf.losses.Reduction.NONE)
     loss_for_all = loss_fn(y_true, y_pred)
-    loss_for_all = tf.reduce_sum(loss_for_all, axis=-1)
+    #loss_for_all = tf.reduce_sum(loss_for_all, axis=-1)
     #
     pos_cond = tf.reduce_any(tf.not_equal(y_true, tf.constant(0.0)), axis=-1)
     pos_mask = tf.cast(pos_cond, dtype=tf.float32)

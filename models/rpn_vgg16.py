@@ -13,12 +13,16 @@ def get_model(hyper_params):
         feature_extractor = feature extractor layer from the base model
     """
     img_size = hyper_params["img_size"]
-    base_model = VGG16(include_top=False, input_shape=(img_size, img_size, 3))
+    base_model = VGG16(include_top=False, input_shape=(img_size, img_size, 3), weights='imagenet')
     feature_extractor = base_model.get_layer("block5_conv3")
     output = Conv2D(512, (3, 3), activation="relu", padding="same", name="rpn_conv")(feature_extractor.output)
     rpn_cls_output = Conv2D(hyper_params["anchor_count"], (1, 1), activation="sigmoid", name="rpn_cls")(output)
     rpn_reg_output = Conv2D(hyper_params["anchor_count"] * 4, (1, 1), activation="linear", name="rpn_reg")(output)
     rpn_model = Model(inputs=base_model.input, outputs=[rpn_reg_output, rpn_cls_output])
+
+    print('[INFO BACKBONE]')
+    base_model.trainable = False
+    base_model.summary()
     return rpn_model, feature_extractor
 
 def init_model(model):

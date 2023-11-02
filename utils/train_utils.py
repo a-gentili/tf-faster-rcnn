@@ -9,7 +9,19 @@ RPN = {
         "anchor_ratios": [1., 2., 1./2.],
         "anchor_scales": [128, 256, 512],
     },
+    "vgg19": {
+        "img_size": 500,
+        "feature_map_shape": 31,
+        "anchor_ratios": [1., 2., 1./2.],
+        "anchor_scales": [128, 256, 512],
+    },
     "mobilenet_v2": {
+        "img_size": 500,
+        "feature_map_shape": 32,
+        "anchor_ratios": [1., 2., 1./2.],
+        "anchor_scales": [128, 256, 512],
+    },
+    "resnet50": {
         "img_size": 500,
         "feature_map_shape": 32,
         "anchor_ratios": [1., 2., 1./2.],
@@ -83,7 +95,7 @@ def faster_rcnn_generator(dataset, anchors, hyper_params):
         for image_data in dataset:
             img, gt_boxes, gt_labels = image_data
             bbox_deltas, bbox_labels = calculate_rpn_actual_outputs(anchors, gt_boxes, gt_labels, hyper_params)
-            yield (img, gt_boxes, gt_labels, bbox_deltas, bbox_labels), #()
+            yield (img, gt_boxes, gt_labels, bbox_deltas, bbox_labels),#()
 
 def rpn_generator(dataset, anchors, hyper_params):
     """Tensorflow data generator for fit method, yielding inputs and outputs.

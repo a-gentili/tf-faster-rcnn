@@ -2,6 +2,9 @@ import tensorflow as tf
 from tensorflow.keras.callbacks import ModelCheckpoint, TensorBoard
 from utils import io_utils, data_utils, train_utils, bbox_utils
 from models import faster_rcnn
+import os
+
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'  # or any {'0', '1', '2'}
 
 args = io_utils.handle_args()
 if args.handle_gpu:
@@ -16,6 +19,10 @@ io_utils.is_valid_backbone(backbone)
 
 if backbone == "mobilenet_v2":
     from models.rpn_mobilenet_v2 import get_model as get_rpn_model
+elif backbone == "vgg19":
+	from models.rpn_vgg19 import get_model as get_rpn_model
+elif backbone == "resnet50":
+	from models.rpn_resnet50 import get_model as get_rpn_model
 else:
     from models.rpn_vgg16 import get_model as get_rpn_model
 
@@ -72,6 +79,10 @@ tensorboard_callback = TensorBoard(log_dir=log_path)
 
 step_size_train = train_utils.get_step_size(train_total_items, batch_size)
 step_size_val = train_utils.get_step_size(val_total_items, batch_size)
+
+#print('[INFO] FASTER R-CNN MODEL')
+#frcnn_model.summary()
+
 frcnn_model.fit(frcnn_train_feed,
                 steps_per_epoch=step_size_train,
                 validation_data=frcnn_val_feed,

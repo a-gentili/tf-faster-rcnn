@@ -4,22 +4,29 @@ This is tensorflow Faster-RCNN implementation from scratch supporting to the bat
 All methods are tried to be created in the simplest way for easy understanding.
 Most of the operations performed during the implementation were carried out as described in the [paper](https://arxiv.org/abs/1506.01497) and [tf-rpn](https://github.com/FurkanOM/tf-rpn) repository.
 
-It's implemented and tested with **tensorflow 2.0**.
+It's implemented and tested with **python 3.7 -- tensorflow 2.6 -- Cuda Toolkit 11.2 -- CudNN 8.1 on Ampere A100 Multi-GPU**
 
-[MobileNetV2](https://www.tensorflow.org/api_docs/python/tf/keras/applications/MobileNetV2) and [VGG16](https://www.tensorflow.org/api_docs/python/tf/keras/applications/VGG16) backbones are supported.
+[MobileNetV2](https://www.tensorflow.org/api_docs/python/tf/keras/applications/MobileNetV2), [VGG16](https://www.tensorflow.org/api_docs/python/tf/keras/applications/VGG16), [VGG19](https://www.tensorflow.org/api_docs/python/tf/keras/applications/vgg19/VGG19) and [Resnet50](https://www.tensorflow.org/api_docs/python/tf/keras/applications/resnet50/ResNet50) backbones are supported.
 
 ## Usage
 
 Project models created in virtual environment using [miniconda](https://docs.conda.io/en/latest/miniconda.html).
 You can also create required virtual environment with [conda](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#creating-an-environment-from-an-environment-yml-file).
 
-To create virtual environment (tensorflow-2 gpu environment):
+To create virtual environment (tensorflow 2.6 environment):
 
 ```sh
 conda env create -f environment.yml
 ```
+Download CudNN 8.1 libraries from [CuDNN Archive](https://developer.nvidia.com/rdp/cudnn-archive) (Free account required), decompress and copy all the files in your anaconda/miniconda environment directory:
 
-There are two different backbone, first one the legacy **vgg16** backbone and the second and default one is **mobilenet_v2**.
+```sh
+sudo cp cuda/include/cudnn*.h   /anaconda3/envs/<your environment here>/include
+sudo cp cuda/lib64/libcudnn*    /anaconda3/envs/<your environment here>/lib
+sudo chmod a+r /usr/local/cuda/include/cudnn*.h    /anaconda3/envs/<your environment here>/lib/libcudnn*
+```
+
+There are several different backbone: **vgg16**, **vgg19**,**resnet50** backbones an thed default one is **mobilenet_v2**.
 You can easily specify the backbone to be used with the **--backbone** parameter.
 Default backbone is **mobilenet_v2**.
 
